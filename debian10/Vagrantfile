@@ -10,12 +10,12 @@ Vagrant.configure(2) do |config|
   NodeCount = 1
 
   (1..NodeCount).each do |i|
-    config.vm.define "ubuntuvm0#{i}" do |node|
+    config.vm.define "debianvm0#{i}" do |node|
       node.vm.box = "debian/buster64"
-      node.vm.hostname = "ubuntuvm0#{i}.example.com"
+      node.vm.hostname = "debianvm0#{i}.example.com"
       node.vm.network "private_network", ip: "172.16.16.11#{i}"
       node.vm.provider "virtualbox" do |v|
-        v.name = "ubuntuvm0#{i}"
+        v.name = "debianvm0#{i}"
         v.memory = 2048
         v.cpus = 1
       end
