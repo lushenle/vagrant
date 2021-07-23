@@ -1,0 +1,4 @@
+### vagrant
+
+Store Vagrantfiles
+
