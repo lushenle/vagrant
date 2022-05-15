@@ -1,0 +1,33 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ENV['VAGRANT_NO_PARALLEL'] = 'yes'
+
+Vagrant.configure(2) do |config|
+  NodeCount = 1
+
+  (1..NodeCount).each do |i|
+    config.vm.define "ubuntu0#{i}" do |node|
+      node.vm.hostname = "ubuntu0#{i}.shenle.lu"
+      #node.vm.network "private_network", ip: "172.17.10.1#{i}"
+      node.vm.disk :disk, size: "50GB", primary: true
+      node.vm.provider "docker" do |docker, override|
+        # this is where your Dockerfile lives
+        docker.build_dir = "."
+
+        docker.remains_running = true
+        override.vm.box = nil
+        # make sure it sets up ssh with the Dockerfile
+        # vagrant is pretty dependent on ssh
+        override.ssh.insert_key = true
+        override.ssh.private_key_path = "/Users/lushenle/.ssh/id_dsa"
+        docker.has_ssh = true
+
+        # configure docker to allow access to more resources
+        docker.privileged = true
+        docker.name = "ubuntu0#{i}"
+      end
+    end
+  end
+
+end
